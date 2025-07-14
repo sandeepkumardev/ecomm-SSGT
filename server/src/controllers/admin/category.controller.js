@@ -39,7 +39,7 @@ const createCategory = async (req, res) => {
 };
 
 const updateCategory = async (req, res) => {
-  const id = req.params;
+  const { id } = req.params;
   const { name } = req.body;
 
   if (!id) {
@@ -52,7 +52,7 @@ const updateCategory = async (req, res) => {
   const slug = generateSlug(name);
 
   try {
-    const data = await updateCategoryDB(req.params.id, { name, slug });
+    const data = await updateCategoryDB(id, { name, slug });
     return res.json({
       success: true,
       message: "Category updated successfully!",
@@ -66,8 +66,6 @@ const updateCategory = async (req, res) => {
       });
     }
 
-    console.log(error);
-
     return res.json({
       success: false,
       error: "something went wrong!",
@@ -76,14 +74,14 @@ const updateCategory = async (req, res) => {
 };
 
 const deleteCategory = async (req, res) => {
-  // const id = req.params;
+  const { id } = req.params;
 
-  // if (!id) {
-  //   return res.json({
-  //     success: false,
-  //     error: "id is required!",
-  //   });
-  // }
+  if (!id) {
+    return res.json({
+      success: false,
+      error: "id is required!",
+    });
+  }
 
   try {
     const data = await deleteCategoryDB(req.params.id);
@@ -93,8 +91,6 @@ const deleteCategory = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.log(error);
-
     return res.json({
       success: false,
       error: "something went wrong!",
