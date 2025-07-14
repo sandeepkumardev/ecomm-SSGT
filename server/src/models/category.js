@@ -5,6 +5,6 @@ const categorySchema = new mongoose.Schema({
   slug: { type: String, require: true, unique: true },
 });
 
-const category = mongoose.Model("Category", categorySchema);
+const category = mongoose.model("Category", categorySchema);
 
 module.exports = category;

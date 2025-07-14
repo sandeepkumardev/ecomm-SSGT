@@ -1,7 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const { connectDB } = require("./src/config/db");
-const userRoutes = require("./src/routes/user.routes");
+const userRoutes = require("./src/routes/users/user.routes");
+const adminRoutes = require("./src/routes/admin");
 
 const app = express();
 const PORT = 4000;
@@ -14,6 +15,10 @@ app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
+// admin routes
+app.use("/admin", adminRoutes);
+
+// user routes
 app.use("", userRoutes);
 
 app.listen(PORT, () => {

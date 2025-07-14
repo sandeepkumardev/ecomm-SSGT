@@ -1,4 +1,4 @@
-const { registerUser, findUserByEmail } = require("../services/user.service");
+const { registerUser, findUserByEmail } = require("../../services/user.service");
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
