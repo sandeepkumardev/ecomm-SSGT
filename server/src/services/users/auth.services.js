@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../../models/user");
 
 const registerUser = async ({ name, email, password }) => {
   const newUser = new User({ name, email, password });
@@ -9,4 +9,8 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ email });
 };
 
-module.exports = { registerUser, findUserByEmail };
+const getProfileDB = async (id) => {
+  return await User.findById(id).populate("addresses");
+};
+
+module.exports = { registerUser, findUserByEmail, getProfileDB };

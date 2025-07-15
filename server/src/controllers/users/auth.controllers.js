@@ -1,4 +1,4 @@
-const { registerUser, findUserByEmail } = require("../../services/user.service");
+const { registerUser, findUserByEmail, getProfileDB } = require("../../services/users/auth.services");
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -74,6 +74,12 @@ const login = async (req, res) => {
   }
 };
 
-const getProfile = () => {};
+const getProfile = async (req, res) => {
+  const { id } = req.body;
+
+  const data = await getProfileDB(id);
+
+  return res.json({ success: true, data });
+};
 
 module.exports = { register, login, getProfile };

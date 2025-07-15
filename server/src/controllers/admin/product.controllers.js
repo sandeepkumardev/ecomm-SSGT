@@ -22,6 +22,13 @@ const createProduct = async (req, res) => {
     });
   }
 
+  if (mrp < price) {
+    return res.json({
+      success: false,
+      error: "MRP should be greater than price",
+    });
+  }
+
   const slug = generateSlug(title);
 
   try {
