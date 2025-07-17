@@ -1,7 +1,7 @@
 const Address = require("../../models/address");
 
-const getAddressesDB = async () => {
-  return await Address.find({});
+const getAddressesDB = async (id) => {
+  return await Address.find({ user: id });
 };
 
 const addAddressDB = async (data) => {

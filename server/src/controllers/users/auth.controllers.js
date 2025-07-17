@@ -1,4 +1,5 @@
 const { registerUser, findUserByEmail, getProfileDB } = require("../../services/users/auth.services");
+const { generateToken } = require("../../utils");
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -61,9 +62,17 @@ const login = async (req, res) => {
       });
     }
 
+    // generate token
+    const { accessToken, refreshToken } = generateToken({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+
     return res.json({
       success: true,
       message: "User loggedin successfully!",
+      data: { accessToken, refreshToken },
     });
   } catch (error) {
     console.log(error);
