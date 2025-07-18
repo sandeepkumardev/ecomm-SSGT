@@ -1,4 +1,4 @@
-const { createOrderDB, getOrdersDB } = require("../../services/users/order.services");
+const { createOrderDB, getOrdersDB, cancleOrderDB } = require("../../services/users/order.services");
 
 const getOrders = async (req, res) => {
   const data = await getOrdersDB();
@@ -27,6 +27,18 @@ const createOrder = async (req, res) => {
   }
 };
 
-const cancelOrder = () => {};
+const cancelOrder = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await cancleOrderDB(id);
+    return res.json({ success: true, message: "Order canceled successfully!" });
+  } catch (error) {
+    return res.json({
+      success: false,
+      error: "something went wrong!",
+    });
+  }
+};
 
 module.exports = { getOrders, createOrder, cancelOrder };

@@ -14,4 +14,8 @@ const createOrderDB = async (data) => {
   return await newOrder.save();
 };
 
-module.exports = { getOrdersDB, createOrderDB };
+const cancleOrderDB = async (id) => {
+  return await Order.findByIdAndUpdate(id, { status: "canceled" }, { new: true });
+};
+
+module.exports = { getOrdersDB, createOrderDB, cancleOrderDB };
