@@ -67,12 +67,13 @@ const login = async (req, res) => {
       id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
     });
 
     return res.json({
       success: true,
       message: "User loggedin successfully!",
-      data: { accessToken, refreshToken },
+      data: { user, accessToken, refreshToken },
     });
   } catch (error) {
     console.log(error);
@@ -84,7 +85,7 @@ const login = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.user;
 
   const data = await getProfileDB(id);
 

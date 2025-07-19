@@ -10,7 +10,7 @@ const findUserByEmail = async (email) => {
 };
 
 const getProfileDB = async (id) => {
-  return await User.findById(id).populate("addresses");
+  return await User.findById(id);
 };
 
 module.exports = { registerUser, findUserByEmail, getProfileDB };

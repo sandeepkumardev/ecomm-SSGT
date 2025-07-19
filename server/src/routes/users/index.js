@@ -1,14 +1,13 @@
 const express = require("express");
-const authRoutes = require("./auth.routes");
 const orderRoutes = require("./order.routes");
 const addressRoutes = require("./address.routes");
-
-const authMiddleware = require("../../middlewares/auth.middleware");
+const { getProfile } = require("../../controllers/users/auth.controllers");
 
 const router = express.Router();
 
-router.use("/auth", authRoutes);
-router.use("/address", authMiddleware, addressRoutes);
-router.use("/order", authMiddleware, orderRoutes);
+router.get("/me", getProfile);
+
+router.use("/address", addressRoutes);
+router.use("/order", orderRoutes);
 
 module.exports = router;
