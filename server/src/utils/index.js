@@ -5,8 +5,8 @@ const generateSlug = (name) => {
 };
 
 const generateToken = (data) => {
-  const accessToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "1d" });
-  const refreshToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "2d" });
+  const accessToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" });
+  const refreshToken = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "30d" });
   return { accessToken, refreshToken };
 };
 
