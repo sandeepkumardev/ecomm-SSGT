@@ -1,4 +1,4 @@
-const { getCartItemsDB, addCartItemDB, updateCartItemDB } = require("../../services/users/cart.services");
+const { getCartItemsDB, addCartItemDB, updateCartItemDB, deleteCartItemDB } = require("../../services/users/cart.services");
 
 const getCartItems = async (req, res) => {
   const { id } = req.user;
@@ -28,6 +28,9 @@ const addCartItem = async (req, res) => {
 
   try {
     const data = await addCartItemDB(id, item, quantity);
+    if (data.error) {
+      return res.json({ success: false, error: data.error });
+    }
     return res.json({ success: true, data });
   } catch (error) {
     console.log(error);
@@ -36,7 +39,7 @@ const addCartItem = async (req, res) => {
 };
 
 const updateCartItem = async (req, res) => {
-  const { id: cartId } = req.params;
+  const { id } = req.params;
   const { quantity } = req.body;
 
   if (!quantity) {
@@ -44,13 +47,22 @@ const updateCartItem = async (req, res) => {
   }
 
   try {
-    const data = await updateCartItemDB(cartId, quantity);
+    const data = await updateCartItemDB(id, quantity);
     return res.json({ success: true, data });
   } catch (error) {
     return res.json({ success: false, error: "something went wrong!" });
   }
 };
 
-const deleteCartItem = () => {};
+const deleteCartItem = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await deleteCartItemDB(id);
+    return res.json({ success: true, data: "Cart item deleted successfully!" });
+  } catch (error) {
+    return res.json({ success: false, error: "something went wrong!" });
+  }
+};
 
 module.exports = { getCartItems, addCartItem, updateCartItem, deleteCartItem };

@@ -8,6 +8,14 @@ module.exports = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const payload = verifyToken(token);
+
+    if (!payload.id) {
+      return res.json({
+        success: false,
+        error: "invalid token",
+      });
+    }
+
     req.user = payload;
   } catch (error) {
     return res.json({

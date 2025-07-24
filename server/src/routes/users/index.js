@@ -11,5 +11,6 @@ router.get("/me", getProfile);
 router.use("/address", addressRoutes);
 router.use("/order", orderRoutes);
 router.use("/cart", cartRoutes);
+router.use("/wishlist", require("./wishlist.routes"));
 
 module.exports = router;

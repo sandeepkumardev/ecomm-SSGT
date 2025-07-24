@@ -13,15 +13,16 @@ const addCartItemDB = async (user, item, quantity) => {
     const data = new Cart({ user, item, quantity });
     return await data.save();
   } else {
-    // return error
-    // update quantity
-
-    return {};
+    return { error: "Item already in cart" };
   }
 };
 
-const updateCartItemDB = async (cartId, quantity) => {
-  return await Cart.findByIdAndUpdate(cartId, { quantity }, { new: true });
+const updateCartItemDB = async (id, quantity) => {
+  return await Cart.findByIdAndUpdate(id, { quantity }, { new: true });
 };
 
-module.exports = { getCartItemsDB, addCartItemDB, updateCartItemDB };
+const deleteCartItemDB = async (id) => {
+  return await Cart.findByIdAndDelete(id);
+};
+
+module.exports = { getCartItemsDB, addCartItemDB, updateCartItemDB, deleteCartItemDB };
