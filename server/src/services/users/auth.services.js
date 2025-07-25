@@ -9,8 +9,4 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ email });
 };
 
-const getProfileDB = async (id) => {
-  return await User.findById(id);
-};
-
-module.exports = { registerUser, findUserByEmail, getProfileDB };
+module.exports = { registerUser, findUserByEmail };

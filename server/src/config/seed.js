@@ -1,6 +1,7 @@
 require("dotenv").config();
 const User = require("../models/user");
 const { connectDB } = require("./db");
+const { hashPassword } = require("../utils");
 
 const dbSeed = async () => {
   try {
@@ -12,7 +13,7 @@ const dbSeed = async () => {
     const admin = new User({
       name: "Admin",
       email: "admin@gmail.com",
-      password: "admin",
+      password: await hashPassword("admin"),
       role: "admin",
     });
     await admin.save();

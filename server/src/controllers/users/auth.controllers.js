@@ -1,5 +1,5 @@
-const { registerUser, findUserByEmail, getProfileDB } = require("../../services/users/auth.services");
-const { generateToken } = require("../../utils");
+const { registerUser, findUserByEmail } = require("../../services/users/auth.services");
+const { generateToken, hashPassword, verifyPassword } = require("../../utils");
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -12,7 +12,14 @@ const register = async (req, res) => {
   }
 
   try {
-    const user = await registerUser({ name, email, password });
+    // hash password
+    const hashPswd = await hashPassword(password);
+
+    const user = await registerUser({ name, email, password: hashPswd });
+
+    // remove password
+    user.password = undefined;
+
     return res.json({
       success: true,
       data: user,
@@ -55,12 +62,15 @@ const login = async (req, res) => {
     }
 
     // check password
-    if (user.password !== password) {
+    const isValid = await verifyPassword(password, user.password);
+    if (!isValid) {
       return res.json({
         success: false,
         error: "Wrong password!",
       });
     }
+
+    user.password = undefined;
 
     // generate token
     const { accessToken, refreshToken } = generateToken({
@@ -84,12 +94,4 @@ const login = async (req, res) => {
   }
 };
 
-const getProfile = async (req, res) => {
-  const { id } = req.user;
-
-  const data = await getProfileDB(id);
-
-  return res.json({ success: true, data });
-};
-
-module.exports = { register, login, getProfile };
+module.exports = { register, login };

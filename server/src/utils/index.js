@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const generateSlug = (name) => {
   return name.toLowerCase().trim().replace(/\s+/g, "-");
@@ -14,4 +15,12 @@ const verifyToken = (token) => {
   return jwt.verify(token, process.env.JWT_SECRET);
 };
 
-module.exports = { generateSlug, generateToken, verifyToken };
+const hashPassword = (password) => {
+  return bcrypt.hash(password, 12);
+};
+
+const verifyPassword = (password, hashedPassword) => {
+  return bcrypt.compare(password, hashedPassword);
+};
+
+module.exports = { generateSlug, generateToken, verifyToken, hashPassword, verifyPassword };

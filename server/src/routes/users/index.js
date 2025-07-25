@@ -2,7 +2,7 @@ const express = require("express");
 const orderRoutes = require("./order.routes");
 const addressRoutes = require("./address.routes");
 const cartRoutes = require("./cart.routes");
-const { getProfile } = require("../../controllers/users/auth.controllers");
+const { getProfile } = require("../../controllers/users/profile.controllers");
 
 const router = express.Router();
 
