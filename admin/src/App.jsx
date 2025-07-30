@@ -5,28 +5,22 @@ import Products from "./pages/Products";
 import Categories from "./pages/Categories";
 import Orders from "./pages/Orders";
 import Users from "./pages/Users";
-import Navbar from "./components/Navbar";
-import DesktopSidebar from "./components/DesktopSidebar";
-import MobileSidebar from "./components/MobileSidebar";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Navbar />
-      <div className="flex">
-        <MobileSidebar />
-        <DesktopSidebar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
 
-        <div className="flex-1 p-2 sm:p-5">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/users" element={<Users />} />
-          </Routes>
-        </div>
-      </div>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/users" element={<Users />} />
+
+        <Route path="*" element={<div>Page not found!</div>} />
+      </Routes>
     </BrowserRouter>
   );
 };

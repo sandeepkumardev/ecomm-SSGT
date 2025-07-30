@@ -1,7 +1,8 @@
-import React from "react";
+import Layout from "../components/Layout";
+import withAuth from "../components/withAuth";
 
 const Products = () => {
-  return <div>Products Page</div>;
+  return <Layout>Products Page</Layout>;
 };
 
-export default Products;
+export default withAuth(Products);

@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.login-font {
+  font-family: "Bitcount Prop Single", system-ui;
+  font-optical-sizing: auto;
+}

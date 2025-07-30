@@ -1,7 +1,8 @@
-import React from "react";
+import Layout from "../components/Layout";
+import withAuth from "../components/withAuth";
 
 const Orders = () => {
-  return <div>Orders page</div>;
+  return <Layout>Orders page</Layout>;
 };
 
-export default Orders;
+export default withAuth(Orders);

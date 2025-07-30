@@ -1,7 +1,8 @@
-import React from "react";
+import Layout from "../components/Layout";
+import withAuth from "../components/withAuth";
 
 const Users = () => {
-  return <div>Users page</div>;
+  return <Layout>Users page</Layout>;
 };
 
-export default Users;
+export default withAuth(Users);

@@ -1,7 +1,8 @@
-import React from "react";
+import Layout from "../components/Layout";
+import withAuth from "../components/withAuth";
 
 const Categories = () => {
-  return <div>Categories page</div>;
+  return <Layout>Categories page</Layout>;
 };
 
-export default Categories;
+export default withAuth(Categories);

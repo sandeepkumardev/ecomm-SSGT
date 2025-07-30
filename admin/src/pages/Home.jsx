@@ -1,7 +1,8 @@
-import React from "react";
+import Layout from "../components/Layout";
+import withAuth from "../components/withAuth";
 
 const Home = () => {
-  return <div>Home page</div>;
+  return <Layout>Home page</Layout>;
 };
 
-export default Home;
+export default withAuth(Home);
