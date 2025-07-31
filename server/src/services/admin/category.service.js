@@ -1,7 +1,17 @@
 const category = require("../../models/category");
+const Product = require("../../models/product");
 
 const getCategroiesDB = async () => {
-  return await category.find({});
+  const categories = await category.find({}).lean();
+
+  const categoriesWithTotals = await Promise.all(
+    categories.map(async (cat) => {
+      const total = await Product.countDocuments({ category: cat._id });
+      return { ...cat, total };
+    })
+  );
+
+  return categoriesWithTotals;
 };
 
 const createCategoryDB = async (name, slug) => {
