@@ -44,7 +44,6 @@ const Dialog = ({ id, name, edit, open, onClose }) => {
         return;
       }
 
-      console.log(data);
       const n = data.data.name;
       const s = data.data.slug;
 
