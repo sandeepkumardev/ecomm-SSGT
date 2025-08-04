@@ -69,31 +69,31 @@ const Categories = () => {
       <div className="flex justify-center items-center">{!data.length && loading && <h1>Loading...</h1>}</div>
 
       {data.length !== 0 && (
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Name
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Slug
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Total
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200">
               {data.map((item) => (
                 <tr key={item._id} className="border border-x-0 border-gray-300">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.slug}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.total || 0}</td>
-                  <td className="flex gap-2 px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="flex gap-2 px-6 py-4 text-sm text-gray-500">
                     <EditCategory id={item._id} name={item.name} edit={updateCategory} />
                     <DeleteCategory id={item._id} remove={deleteCategory} />
                   </td>

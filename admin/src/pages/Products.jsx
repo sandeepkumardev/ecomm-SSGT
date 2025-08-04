@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import withAuth from "../components/withAuth";
 import NewProduct from "../dialogs/NewProduct";
+import EditProduct from "../dialogs/EditProduct";
+import DeleteProduct from "../dialogs/DeleteProduct";
 
 const Products = () => {
   const [data, setData] = useState([]);
@@ -10,6 +12,21 @@ const Products = () => {
 
   const addProduct = (newProduct) => {
     setData([...data, { ...newProduct, category: categories.find((c) => c._id === newProduct.category) }]);
+  };
+
+  const updateProduct = (id, newData) => {
+    setData(
+      data.map((item) => {
+        if (item._id === id) {
+          return { ...item, ...newData, category: categories.find((c) => c._id === newData.category) };
+        }
+        return item;
+      })
+    );
+  };
+
+  const deleteProduct = (id) => {
+    setData(data.filter((item) => item._id !== id));
   };
 
   useEffect(() => {
@@ -99,9 +116,9 @@ const Products = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <span className="font-bold text-black">{item.price}</span> / <span className="text-xs">{item.mrp}</span>
                   </td>
-                  <td className="flex gap-2 px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {/* <EditCategory id={item._id} name={item.name} edit={updateCategory} />
-                    <DeleteCategory id={item._id} remove={deleteCategory} /> */}
+                  <td className="flex gap-2 px-6 py-4 text-sm text-gray-500">
+                    <EditProduct id={item._id} item={item} categories={categories} update={updateProduct} />
+                    <DeleteProduct id={item._id} remove={deleteProduct} />
                   </td>
                 </tr>
               ))}

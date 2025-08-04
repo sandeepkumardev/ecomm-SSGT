@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const category = require("../../models/category");
 const Product = require("../../models/product");
 
@@ -24,7 +25,18 @@ const updateCategoryDB = async (id, data) => {
 };
 
 const deleteCategoryDB = async (id) => {
-  return await category.findByIdAndDelete(id);
+  const session = await mongoose.startSession();
+
+  try {
+    await session.withTransaction(async () => {
+      await category.findByIdAndDelete(id, { session });
+      await Product.deleteMany({ category: id }, { session });
+    });
+    return {};
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
 
 module.exports = { getCategroiesDB, createCategoryDB, updateCategoryDB, deleteCategoryDB };

@@ -1,4 +1,4 @@
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import React from "react";
 
 const EditCategory = ({ id, name, edit }) => {
@@ -62,7 +62,7 @@ const Dialog = ({ id, name, edit, open, onClose }) => {
     >
       <div className="bg-white p-4 m-4 w-[300px] relative rounded">
         <button onClick={onClose} className="absolute top-1 right-3 text-xs font-bold">
-          X
+          <X />
         </button>
 
         <div className="flex flex-col gap-2">

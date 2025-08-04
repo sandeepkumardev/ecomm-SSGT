@@ -1,7 +1,7 @@
 import { Trash, X } from "lucide-react";
 import React from "react";
 
-const DeleteCategory = ({ id, remove }) => {
+const DeleteProduct = ({ id, remove }) => {
   const [open, setOpen] = React.useState(false);
 
   const onClose = () => {
@@ -24,7 +24,7 @@ const Dialog = ({ id, remove, open, onClose }) => {
     try {
       setLoading(true);
       const url = import.meta.env.VITE_SERVER_URL;
-      const res = await fetch(`${url}/admin/category/${id}`, {
+      const res = await fetch(`${url}/admin/product/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -34,11 +34,11 @@ const Dialog = ({ id, remove, open, onClose }) => {
       const data = await res.json();
 
       if (!data.success) {
-        alert(data.error || "failed to delte category!");
+        alert(data.error || "failed to delte product!");
         return;
       }
 
-      // remove category from frontend
+      // remove product from frontend
       remove(id);
       onClose();
     } catch (error) {
@@ -53,12 +53,12 @@ const Dialog = ({ id, remove, open, onClose }) => {
     >
       <div className="bg-white p-4 m-4 w-[300px] relative rounded">
         <button onClick={onClose} className="absolute top-1 right-3 text-xs font-bold">
-          <X className="cursor-pointer" />
+          <X />
         </button>
 
-        <h1>Are you sure you want to delete this category?</h1>
+        <h1>Are you sure you want to delete this product?</h1>
 
-        <div className="flex justify-end gap-2 mt-4">
+        <div className="flex justify-end gap-2 mt-2">
           <button
             disabled={loading}
             onClick={onClose}
@@ -79,4 +79,4 @@ const Dialog = ({ id, remove, open, onClose }) => {
   );
 };
 
-export default DeleteCategory;
+export default DeleteProduct;
