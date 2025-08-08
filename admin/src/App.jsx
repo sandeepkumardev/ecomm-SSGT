@@ -6,6 +6,7 @@ import Categories from "./pages/Categories";
 import Orders from "./pages/Orders";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
+import Product from "./pages/Product";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
 
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/product/:slug" element={<Product />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/users" element={<Users />} />

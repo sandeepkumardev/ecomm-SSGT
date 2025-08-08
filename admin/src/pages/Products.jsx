@@ -4,6 +4,7 @@ import withAuth from "../components/withAuth";
 import NewProduct from "../dialogs/NewProduct";
 import EditProduct from "../dialogs/EditProduct";
 import DeleteProduct from "../dialogs/DeleteProduct";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const [data, setData] = useState([]);
@@ -110,7 +111,9 @@ const Products = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {data.map((item) => (
                 <tr key={item._id} className="border border-x-0 border-gray-300">
-                  <td className="px-6 py-0 text-sm font-medium text-gray-900 line-clamp-1">{item.title}</td>
+                  <td className="px-6 py-0 text-sm font-medium text-gray-900 line-clamp-1">
+                    <Link to={`/product/${item.slug}`}>{item.title}</Link>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.category.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.stock || 0}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
