@@ -3,8 +3,15 @@ const {
   createProductDB,
   updateProductDB,
   deleteProductDB,
+  getProductInfoDB,
 } = require("../../services/admin/product.services");
 const { generateSlug } = require("../../utils");
+
+const getProductInfo = async (req, res) => {
+  const { slug } = req.params;
+  const data = await getProductInfoDB({ slug });
+  return res.json({ success: true, data });
+};
 
 const getProducts = async (req, res) => {
   const data = await getProductsDB();
@@ -74,4 +81,4 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, createProduct, updateProduct, deleteProduct };
+module.exports = { getProductInfo, getProducts, createProduct, updateProduct, deleteProduct };

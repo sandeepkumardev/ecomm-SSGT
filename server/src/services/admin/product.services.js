@@ -1,5 +1,9 @@
 const Product = require("../../models/product");
 
+const getProductInfoDB = async ({ slug }) => {
+  return await Product.findOne({ slug }).populate("category");
+};
+
 const getProductsDB = async () => {
   return await Product.find({}).populate("category");
 };
@@ -17,4 +21,4 @@ const deleteProductDB = async (id) => {
   return await Product.findByIdAndDelete(id);
 };
 
-module.exports = { getProductsDB, createProductDB, updateProductDB, deleteProductDB };
+module.exports = { getProductInfoDB, getProductsDB, createProductDB, updateProductDB, deleteProductDB };
