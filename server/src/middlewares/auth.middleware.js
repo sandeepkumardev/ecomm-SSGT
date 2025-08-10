@@ -9,6 +9,14 @@ module.exports = (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     const payload = verifyToken(token);
 
+    const { role } = req.query;
+    if (role === "admin" && payload.role !== "admin") {
+      return res.json({
+        success: false,
+        error: "You are not an admin",
+      });
+    }
+
     if (!payload.id) {
       return res.json({
         success: false,

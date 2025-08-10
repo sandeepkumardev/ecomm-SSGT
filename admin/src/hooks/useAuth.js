@@ -10,7 +10,7 @@ export const useAuth = () => {
       const token = localStorage.getItem("token");
       const fetchInfo = async () => {
         try {
-          const res = await fetch("http://localhost:4000/user/me", {
+          const res = await fetch("http://localhost:4000/user/me?role=admin", {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
