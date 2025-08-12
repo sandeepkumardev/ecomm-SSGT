@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import ImageContainer from "../components/ImageContainer";
 
 const Product = () => {
   const { slug } = useParams();
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -27,6 +28,7 @@ const Product = () => {
         }
 
         setData(data.data);
+        setImages(data.data.images);
       } catch (error) {
         console.log(error);
       } finally {
@@ -36,6 +38,31 @@ const Product = () => {
 
     getProduct();
   }, []);
+
+  const handleDeleteImg = async (img) => {
+    try {
+      const filteredImgs = images.filter((i) => i !== img);
+      // update db
+      const serverUrl = import.meta.env.VITE_SERVER_URL;
+      const res = await fetch(`${serverUrl}/admin/product/${data._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ images: filteredImgs }),
+      });
+      const result = await res.json();
+      if (!result.success) {
+        alert(result.error || "Something went wrong!");
+        return;
+      }
+
+      setImages(filteredImgs);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (loading) return <Layout>Loading...</Layout>;
 
@@ -53,7 +80,21 @@ const Product = () => {
           </button>
         </div>
 
-        <ImageContainer />
+        <div className="flex gap-2 overflow-x-auto">
+          {images?.map((img) => (
+            <div key={img} className="relative">
+              <img src={img} alt="" key={img} className="w-20 h-20 object-cover" />
+              <X
+                className="absolute top-0 right-2 cursor-pointer"
+                size={20}
+                color="red"
+                onClick={() => handleDeleteImg(img)}
+              />
+            </div>
+          ))}
+        </div>
+
+        {images?.length < 5 && <ImageContainer productId={data._id} />}
 
         <div>
           <label className="font-semibold">Title</label>
