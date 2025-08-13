@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { Pencil, X } from "lucide-react";
+import { LoaderCircle, Pencil, X } from "lucide-react";
 import ImageContainer from "../components/ImageContainer";
 
 const Product = () => {
@@ -9,6 +9,7 @@ const Product = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [images, setImages] = useState([]);
+  const [imgDeleting, setImgDeleting] = useState(null);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -39,18 +40,19 @@ const Product = () => {
     getProduct();
   }, []);
 
-  const handleDeleteImg = async (img) => {
+  const handleDeleteImg = async (public_id) => {
     try {
-      const filteredImgs = images.filter((i) => i !== img);
+      setImgDeleting(public_id);
+      const filteredImgs = images.filter((i) => i.public_id !== public_id);
       // update db
       const serverUrl = import.meta.env.VITE_SERVER_URL;
-      const res = await fetch(`${serverUrl}/admin/product/${data._id}`, {
-        method: "PUT",
+      const res = await fetch(`${serverUrl}/admin/product/image`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ images: filteredImgs }),
+        body: JSON.stringify({ public_id }),
       });
       const result = await res.json();
       if (!result.success) {
@@ -61,6 +63,8 @@ const Product = () => {
       setImages(filteredImgs);
     } catch (error) {
       console.log(error);
+    } finally {
+      setImgDeleting(null);
     }
   };
 
@@ -82,19 +86,27 @@ const Product = () => {
 
         <div className="flex gap-2 overflow-x-auto">
           {images?.map((img) => (
-            <div key={img} className="relative">
-              <img src={img} alt="" key={img} className="w-20 h-20 object-cover" />
+            <div key={img.public_id} className="relative">
+              {imgDeleting === img.public_id && (
+                <div className="absolute inset-0 w-full h-full bg-black/50 z-50">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white">
+                    <LoaderCircle className="w-8 h-8 animate-spin" />
+                  </div>
+                </div>
+              )}
+
+              <img src={img.url} alt="" key={img} className="w-20 h-20 object-cover" />
               <X
                 className="absolute top-0 right-2 cursor-pointer"
                 size={20}
                 color="red"
-                onClick={() => handleDeleteImg(img)}
+                onClick={() => handleDeleteImg(img.public_id)}
               />
             </div>
           ))}
         </div>
 
-        {images?.length < 5 && <ImageContainer productId={data._id} />}
+        {images?.length < 5 && <ImageContainer productId={data._id} limit={5 - images.length} />}
 
         <div>
           <label className="font-semibold">Title</label>

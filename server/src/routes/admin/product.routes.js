@@ -5,6 +5,8 @@ const {
   updateProduct,
   deleteProduct,
   getProductInfo,
+  addProductImages,
+  deleteProductImage,
 } = require("../../controllers/admin/product.controllers");
 const router = express.Router();
 
@@ -12,6 +14,10 @@ router.get("/", getProducts);
 router.get("/:slug", getProductInfo);
 router.post("/", createProduct);
 router.put("/:id", updateProduct);
+
+router.delete("/image", deleteProductImage);
 router.delete("/:id", deleteProduct);
+
+router.post("/images", addProductImages);
 
 module.exports = router;
