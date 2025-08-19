@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp";
 import Navbar from "./components/shared/Navbar";
 import { Toaster } from "./components/ui/sonner";
 import Orders from "./pages/Orders";
+import Products from "./pages/Products";
 
 const App = () => {
   return (
@@ -12,8 +13,9 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/product/:slug" element={<></>} /> // single product info
+        <Route path="/products/:category" element={<Products />} />
         <Route path="/orders" element={<Orders />} />
-
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
