@@ -6,7 +6,12 @@ const getAllProductsDB = async () => {
   let products = await Product.find({}).select("title slug price mrp category").lean();
 
   for (const e of products) {
-    e.images = await Image.find({ product_id: e._id }).limit(1);
+    const images = await Image.find({ product_id: e._id }).limit(1);
+    if (images.length === 0) {
+      e.images = [{ url: "https://www.svgrepo.com/show/508699/landscape-placeholder.svg" }];
+      continue;
+    }
+    e.images = images;
   }
 
   return products;

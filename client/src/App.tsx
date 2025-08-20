@@ -6,6 +6,7 @@ import Navbar from "./components/shared/Navbar";
 import { Toaster } from "./components/ui/sonner";
 import Orders from "./pages/Orders";
 import Products from "./pages/Products";
+import ProductDetails from "./pages/ProductDetails";
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/product/:slug" element={<></>} /> // single product info
+        <Route path="/product/:slug" element={<ProductDetails />} />
         <Route path="/products/:category" element={<Products />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/signin" element={<SignIn />} />

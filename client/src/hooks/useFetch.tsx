@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import type { ICategory } from "../types";
 import type { IProduct } from "../types";
 
-export const useFetch = (url: string) => {
+export const useFetch = (url: string, dataType?: any) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<ICategory[] | IProduct[] | null>(null);
+  const [data, setData] = useState<typeof dataType | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
