@@ -3,22 +3,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
 import withAuth from "@/components/shared/withAuth";
 
 function SignIn() {
+  const [searchParams] = useSearchParams();
+
   return (
     <div className="flex h-[calc(100vh-60px)] w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <LoginForm />
+        <LoginForm redirect={searchParams.get("redirect")} />
       </div>
     </div>
   );
 }
 
-function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+function LoginForm({ redirect }: { redirect: string | null }) {
+  console.log(redirect);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -56,7 +59,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
       localStorage.setItem("token", data.data.accessToken);
       localStorage.setItem("refToken", data.data.refreshToken);
 
-      window.location.href = "/";
+      window.location.href = redirect || "/";
     } catch (error) {
     } finally {
       setLoading(false);
@@ -64,7 +67,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
   }
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6")}>
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>

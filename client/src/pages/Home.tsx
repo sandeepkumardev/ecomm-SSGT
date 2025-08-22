@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useFetch } from "@/hooks/useFetch";
-import { api } from "@/lib/utils";
 import type { IProduct } from "@/types";
 import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";

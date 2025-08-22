@@ -1,3 +1,5 @@
+const Cart = require("../../models/cart");
+const WishList = require("../../models/wishlist");
 const { registerUser, findUserByEmail } = require("../../services/users/auth.services");
 const { generateToken, hashPassword, verifyPassword } = require("../../utils");
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export const useAuth = () => {
-  const { user, setUser } = useUserStore();
+  const { user, setUser, setCart, setWishlist } = useUserStore();
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(token ? true : false);
 
@@ -21,7 +21,9 @@ export const useAuth = () => {
 
           const data = await res.json();
           if (data.success) {
-            setUser(data.data);
+            setUser(data.data.user);
+            setCart(data.data.cart);
+            setWishlist(data.data.wishlist);
           } else {
             throw new Error(data.error || "something went wrong!");
           }

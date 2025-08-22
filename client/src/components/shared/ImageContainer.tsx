@@ -2,7 +2,8 @@ import type { IImage } from "@/types";
 import React from "react";
 
 const ImageContainer = ({ data }: { data: IImage[] }) => {
-  const [defaultImg, setDefaultImg] = React.useState(data[0].url);
+  console.log(data);
+  const [defaultImg, setDefaultImg] = React.useState(data[0]?.url);
 
   return (
     <div className="h-[500px] flex flex-col sm:flex-row overflow-hidden justify-center">
