@@ -34,10 +34,20 @@ export interface IUser {
 export interface ICart {
   _id?: string;
   quantity: number;
-  item: IProduct | string;
+  item: {
+    _id: string;
+    title: string;
+    slug: string;
+    images: IImage[];
+  };
 }
 
 export interface IWishlist {
   _id?: string;
-  item: IProduct | string;
+  item: {
+    _id: string;
+    title: string;
+    slug: string;
+    images: IImage[];
+  };
 }

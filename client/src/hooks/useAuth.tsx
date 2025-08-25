@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export const useAuth = () => {
-  const { user, setUser, setCart, setWishlist } = useUserStore();
+  const { user, setUser, setCart, setWishlist, setLoading: setUserLoading } = useUserStore();
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(token ? true : false);
 
@@ -28,10 +28,12 @@ export const useAuth = () => {
             throw new Error(data.error || "something went wrong!");
           }
         } catch (error: any) {
+          // alert(error);
           localStorage.removeItem("token");
           localStorage.removeItem("refToken");
         } finally {
           setLoading(false);
+          setUserLoading(false);
         }
       };
 

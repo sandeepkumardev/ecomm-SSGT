@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { ShoppingCart, Sidebar as SidebarIcon } from "lucide-react";
+import { Bookmark, ShoppingCart, Sidebar as SidebarIcon } from "lucide-react";
 import useAppStore from "@/store/app.store";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ import useUserStore from "@/store/user.store";
 
 const Navbar = () => {
   const { openSidebar } = useAppStore();
-  const { setUser, cart } = useUserStore();
+  const { setUser, cart, wishlist } = useUserStore();
   const { user, loading } = useAuth();
 
   const logOut = () => {
@@ -30,15 +30,23 @@ const Navbar = () => {
       </div>
 
       {user ? (
-        <div className="flex items-center gap-2">
-          <div className="relative">
+        <div className="flex items-center gap-3">
+          <Link to="/cart" className="relative">
             {cart!?.length > 0 && (
               <p className="text-xs bg-red-500 text-white w-4 h-4 rounded-full absolute top-[-5px] right-[-5px] flex items-center justify-center">
                 {cart?.length}
               </p>
             )}
-            <ShoppingCart />
-          </div>
+            <ShoppingCart className="cursor-pointer" />
+          </Link>
+          <Link to="/wishlist" className="relative">
+            {wishlist!?.length > 0 && (
+              <p className="text-xs bg-red-500 text-white w-4 h-4 rounded-full absolute top-[-5px] right-[-5px] flex items-center justify-center">
+                {wishlist?.length}
+              </p>
+            )}
+            <Bookmark className="cursor-pointer" />
+          </Link>
           <Button size={"sm"} onClick={logOut}>
             Log Out
           </Button>

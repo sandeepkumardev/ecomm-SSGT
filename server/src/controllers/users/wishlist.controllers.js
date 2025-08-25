@@ -1,4 +1,10 @@
-const { addWLItemDB, getWLItemsDB, deleteWLItemDB, deleteAllWLItemDB } = require("../../services/users/wishlist.services");
+const {
+  addWLItemDB,
+  getWLItemsDB,
+  deleteWLItemDB,
+  deleteAllWLItemDB,
+  moveToCartDB,
+} = require("../../services/users/wishlist.services");
 
 const getWLItems = async (req, res) => {
   try {
@@ -42,4 +48,20 @@ const deleteAllWLItems = async (req, res) => {
   }
 };
 
-module.exports = { getWLItems, addWLItem, deleteWLItem, deleteAllWLItems };
+const moveToCart = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const data = await moveToCartDB(id, req.user.id);
+    if (!data) {
+      return res.json({ success: false, error: "something went wrong!" });
+    }
+
+    return res.json({ success: true, message: "Wishlist item moved to cart successfully!" });
+  } catch (error) {
+    console.log(error);
+    return res.json({ success: false, error: "something went wrong!" });
+  }
+};
+
+module.exports = { getWLItems, addWLItem, deleteWLItem, deleteAllWLItems, moveToCart };
