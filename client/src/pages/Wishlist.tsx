@@ -24,20 +24,21 @@ const Wishlist = () => {
 };
 
 const Product = (data: IWishlist) => {
-  const { removeWishlistItem, addWishlistItem, addCartItem, removeCartItem } = useUserStore();
+  const { removeWishlistItem, addWishlistItem, moveToCart, rollbackToWishlist } = useUserStore();
 
   const wishListObj = {
     _id: data.item._id,
     title: data.item.title,
     images: [data.item.images[0]],
     slug: data.item.slug,
+    price: data.item.price,
+    mrp: data.item.mrp,
   };
 
-  const moveToCart = async () => {
+  const handleMoveToCart = async () => {
     try {
       // data flow in client
-      removeWishlistItem(data.item._id);
-      addCartItem({ item: wishListObj, quantity: 1 });
+      moveToCart({ item: wishListObj });
 
       // data flow in server
       const res = await fetch(`http://localhost:4000/user/wishlist/move-to-cart/${data.item._id}`, {
@@ -50,17 +51,14 @@ const Product = (data: IWishlist) => {
       const json = await res.json();
       if (!json.success) {
         toast.error(json.error || "something went wrong!");
-        // add item into client wishlist
-        addWishlistItem({ item: wishListObj });
-        removeCartItem(data.item._id);
+        rollbackToWishlist({ item: wishListObj });
         return;
       }
       toast.success(json.message || "Moved to cart!");
     } catch (error) {
       console.log(error);
       toast.error("something went wrong!");
-      addWishlistItem({ item: wishListObj });
-      removeCartItem(data.item._id);
+      rollbackToWishlist({ item: wishListObj });
     }
   };
 
@@ -102,7 +100,7 @@ const Product = (data: IWishlist) => {
         <h1 className="text-sm font-semibold line-clamp-2">{data.item.title}</h1>
       </Link>
       <div className="p-2 flex flex-col gap-2">
-        <Button variant={"outline"} className="cursor-pointer" onClick={moveToCart}>
+        <Button variant={"outline"} className="cursor-pointer" onClick={handleMoveToCart}>
           Move to Cart
         </Button>
         <Button variant={"destructive"} className="cursor-pointer" onClick={removeFromWishlist}>

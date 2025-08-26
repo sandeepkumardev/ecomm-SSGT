@@ -49,6 +49,8 @@ const Product = (data: IProduct) => {
     title: data.title,
     images: [data.images[0]],
     slug: data.slug,
+    price: data.price,
+    mrp: data.mrp,
   };
 
   const addToWishlist = async () => {

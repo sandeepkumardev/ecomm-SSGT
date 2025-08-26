@@ -9,6 +9,7 @@ import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
+import Checkout from "./pages/Checkout";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
 
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/checkout" element={<Checkout />} />
 
         <Route path="/orders" element={<Orders />} />
         <Route path="/signin" element={<SignIn />} />

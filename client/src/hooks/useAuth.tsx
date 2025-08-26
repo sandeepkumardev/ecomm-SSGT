@@ -38,6 +38,9 @@ export const useAuth = () => {
       };
 
       fetchInfo();
+    } else {
+      setLoading(false);
+      setUserLoading(false);
     }
   }, []);
 

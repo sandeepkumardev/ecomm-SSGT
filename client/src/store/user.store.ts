@@ -13,12 +13,16 @@ interface IUserStore {
 
   addCartItem: (item: ICart) => void;
   removeCartItem: (itemId: string) => void;
+  updateQuantity: (itemId: string, quantity: number) => void;
 
   wishlist: IWishlist[] | null;
   setWishlist: (data: IWishlist[] | null) => void;
 
   addWishlistItem: (item: IWishlist) => void;
   removeWishlistItem: (itemId: string) => void;
+
+  moveToCart: (data: IWishlist) => void;
+  rollbackToWishlist: (data: IWishlist) => void;
 }
 
 const useUserStore = create<IUserStore>((set) => ({
@@ -33,6 +37,8 @@ const useUserStore = create<IUserStore>((set) => ({
 
   addCartItem: (item) => set((state) => ({ cart: [...state.cart!, item] })),
   removeCartItem: (itemId) => set((state) => ({ cart: state.cart!.filter((item) => item.item._id !== itemId) })),
+  updateQuantity: (itemId, quantity) =>
+    set((state) => ({ cart: state.cart!.map((item) => (item.item._id === itemId ? { ...item, quantity } : item)) })),
 
   wishlist: null,
   setWishlist: (data) => set({ wishlist: data }),
@@ -41,6 +47,43 @@ const useUserStore = create<IUserStore>((set) => ({
   removeWishlistItem: (itemId) =>
     // @ts-ignore
     set((state) => ({ wishlist: state.wishlist!.filter((item) => (item.item._id || item.item) !== itemId) })),
+
+  moveToCart: (data) =>
+    set((state) => {
+      const item = state.cart?.find((item) => item.item._id === data.item._id);
+      let updatedCart;
+
+      if (item) {
+        updatedCart = state.cart?.map((item) =>
+          item.item._id === data.item._id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        updatedCart = [...state.cart!, { item: data.item, quantity: 1 }];
+      }
+
+      return {
+        cart: updatedCart,
+        wishlist: state.wishlist?.filter((item) => item.item._id !== data.item._id),
+      };
+    }),
+  rollbackToWishlist: (data) =>
+    set((state) => {
+      const item = state.cart?.find((item) => item.item._id === data.item._id);
+      let updatedCart;
+
+      if (item && item.quantity > 1) {
+        updatedCart = state.cart?.map((item) =>
+          item.item._id === data.item._id ? { ...item, quantity: item.quantity - 1 } : item
+        );
+      } else {
+        updatedCart = state.cart?.filter((item) => item.item._id !== data.item._id);
+      }
+
+      return {
+        wishlist: [...state.wishlist!, { item: data.item }],
+        cart: updatedCart,
+      };
+    }),
 }));
 
 export default useUserStore;

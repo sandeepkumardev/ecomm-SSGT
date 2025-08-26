@@ -17,12 +17,15 @@ const addCartItemDB = async (user, item, quantity) => {
   }
 };
 
-const updateCartItemDB = async (id, quantity) => {
-  return await Cart.findByIdAndUpdate(id, { quantity }, { new: true });
+const updateCartItemDB = async (userId, itemId, quantity) => {
+  if (!quantity) {
+    return await Cart.findOneAndDelete({ user: userId, item: itemId });
+  }
+  return await Cart.findOneAndUpdate({ user: userId, item: itemId }, { quantity }, { new: true });
 };
 
 const deleteCartItemDB = async (id) => {
-  return await Cart.findByIdAndDelete(id);
+  return await Cart.findOneAndDelete({ item: id });
 };
 
 module.exports = { getCartItemsDB, addCartItemDB, updateCartItemDB, deleteCartItemDB };

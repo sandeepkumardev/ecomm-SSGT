@@ -39,6 +39,8 @@ export interface ICart {
     title: string;
     slug: string;
     images: IImage[];
+    price: number;
+    mrp: number;
   };
 }
 
@@ -49,5 +51,7 @@ export interface IWishlist {
     title: string;
     slug: string;
     images: IImage[];
+    price: number;
+    mrp: number;
   };
 }

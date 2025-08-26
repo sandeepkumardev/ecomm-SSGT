@@ -39,15 +39,12 @@ const addCartItem = async (req, res) => {
 };
 
 const updateCartItem = async (req, res) => {
+  const { id: userId } = req.user;
   const { id } = req.params;
   const { quantity } = req.body;
 
-  if (!quantity) {
-    return res.json({ success: false, error: "All fields are required", required: ["quantity"] });
-  }
-
   try {
-    const data = await updateCartItemDB(id, quantity);
+    const data = await updateCartItemDB(userId, id, quantity);
     return res.json({ success: true, data });
   } catch (error) {
     return res.json({ success: false, error: "something went wrong!" });

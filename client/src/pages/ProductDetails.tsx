@@ -15,8 +15,6 @@ const ProductDetails = () => {
   const { user, cart, addCartItem, removeCartItem } = useUserStore();
   const { data, loading } = useFetch(`${url}/product/${slug}`);
 
-  console.log(user);
-
   const [readMore, setReadMore] = React.useState(false);
 
   const addToCart = async () => {
@@ -27,7 +25,17 @@ const ProductDetails = () => {
     }
 
     // add item into client cart
-    addCartItem({ item: data._id, quantity: 1 });
+    addCartItem({
+      item: {
+        _id: data._id,
+        title: data.title,
+        price: data.price,
+        mrp: data.mrp,
+        images: [data.images[0]],
+        slug: data.slug,
+      },
+      quantity: 1,
+    });
 
     // add item into server cart
     try {
@@ -45,13 +53,16 @@ const ProductDetails = () => {
         toast.error(json.error || "something went wrong!");
         // remove item from client cart
         removeCartItem(data._id);
-        return;
+        return false;
       }
-    } catch {
-      console.log("something went wrong!");
+
+      return true;
+    } catch (error) {
+      console.log(error);
       toast.error("something went wrong!");
       // remove item from client cart
       removeCartItem(data._id);
+      return false;
     }
   };
 
@@ -62,7 +73,22 @@ const ProductDetails = () => {
       </div>
     );
 
-  const isInCart = cart?.some((item) => item.item === data._id);
+  const isInCart = cart?.some((item) => item.item._id === data._id);
+
+  const handleBuyNow = async () => {
+    // check if user is logged in
+    if (!user) {
+      router(`/signin?redirect=/product/${slug}`);
+      return;
+    }
+
+    if (isInCart) {
+      router("/cart");
+    } else {
+      const added = await addToCart();
+      if (added) router("/cart");
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto ">
@@ -97,7 +123,9 @@ const ProductDetails = () => {
             >
               <ShoppingCart /> {isInCart ? "Added! Go to Cart" : "Add to cart"}
             </Button>
-            <Button className="flex-1 bg-blue-500 hover:bg-blue-600 cursor-pointer">Buy Now</Button>
+            <Button className="flex-1 bg-blue-500 hover:bg-blue-600 cursor-pointer" onClick={handleBuyNow}>
+              Buy Now
+            </Button>
           </div>
         </div>
       </div>
