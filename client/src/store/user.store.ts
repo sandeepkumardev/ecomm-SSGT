@@ -1,4 +1,4 @@
-import type { ICart, IUser, IWishlist } from "@/types";
+import type { IAddress, ICart, IUser, IWishlist } from "@/types";
 import { create } from "zustand";
 
 interface IUserStore {
@@ -7,6 +7,13 @@ interface IUserStore {
 
   user: IUser | null;
   setUser: (data: IUser | null) => void;
+
+  addresses: IAddress[] | null;
+  setAddresses: (data: IAddress[] | null) => void;
+
+  addAddress: (data: IAddress) => void;
+  updateAddress: (id: string, data: IAddress) => void;
+  deleteAddress: (id: string) => void;
 
   cart: ICart[] | null;
   setCart: (data: ICart[] | null) => void;
@@ -31,6 +38,14 @@ const useUserStore = create<IUserStore>((set) => ({
 
   user: null,
   setUser: (data) => set({ user: data }),
+
+  addresses: null,
+  setAddresses: (data) => set({ addresses: data }),
+
+  addAddress: (data) => set((state) => ({ addresses: [...state.addresses!, data] })),
+  updateAddress: (id, data) =>
+    set((state) => ({ addresses: state.addresses!.map((item) => (item._id === id ? data : item)) })),
+  deleteAddress: (id) => set((state) => ({ addresses: state.addresses!.filter((item) => item._id !== id) })),
 
   cart: null,
   setCart: (data) => set({ cart: data }),

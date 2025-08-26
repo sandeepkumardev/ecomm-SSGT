@@ -55,3 +55,15 @@ export interface IWishlist {
     mrp: number;
   };
 }
+
+export interface IAddress {
+  _id: string;
+  fullName: string;
+  phone: string;
+  line1: string;
+  line2: string;
+  landmark: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}

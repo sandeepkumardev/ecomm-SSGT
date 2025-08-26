@@ -21,7 +21,6 @@ function SignIn() {
 }
 
 function LoginForm({ redirect }: { redirect: string | null }) {
-  console.log(redirect);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
