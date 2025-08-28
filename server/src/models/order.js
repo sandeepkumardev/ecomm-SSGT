@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema(
     ],
     status: { type: String, default: "pending", enum: ["pending", "shipped", "delivered", "canceled"] },
     totalAmount: { type: Number, require: true },
-    paymentMethod: { type: String, require: true, enum: ["cash", "card"] },
+    paymentMethod: { type: String, require: true, enum: ["COD", "Online"] },
     shippingAddress: { type: mongoose.Schema.Types.ObjectId, ref: "Address", require: true },
   },
   { timestamps: true }

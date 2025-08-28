@@ -24,6 +24,7 @@ const App = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/checkout" element={<Checkout />} />
 
+        {/* <Route path="/order/:id" element={<OrderDetail />} /> */}
         <Route path="/orders" element={<Orders />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

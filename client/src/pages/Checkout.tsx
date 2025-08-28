@@ -4,14 +4,71 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import NewAddress from "@/dialogs/NewAddress";
+import { url } from "@/lib/utils";
 import useUserStore from "@/store/user.store";
 import type { IAddress } from "@/types";
 import React from "react";
+import { toast } from "sonner";
 
 const Checkout = () => {
-  const { addresses, addAddress } = useUserStore();
+  const { cart, addresses, addAddress } = useUserStore();
   const [selectedAddress, setSelectedAddress] = React.useState<string>("");
   const [paymentMode, setPaymentMode] = React.useState<string>("COD");
+  const [loading, setLoading] = React.useState(false);
+
+  const handleCheckout = async () => {
+    if (cart?.length === 0) {
+      toast.error("Cart is empty");
+      return;
+    }
+    if (selectedAddress === "") {
+      toast.error("Please select an address");
+      return;
+    }
+    if (paymentMode === "") {
+      toast.error("Please select a payment mode");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      // total price
+      const total = cart?.reduce((acc, item) => acc + item.item.price * item.quantity, 0);
+
+      // modified cart
+      const modifiedCart = cart?.map((item) => ({ product: item.item._id, quantity: item.quantity }));
+
+      // create a order in the backend [clear the server cart]
+      const res = await fetch(`${url}/user/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          shippingAddress: selectedAddress,
+          paymentMethod: paymentMode,
+          totalAmount: total,
+          orderItems: modifiedCart,
+        }),
+      });
+      const json = await res.json();
+      if (!json.success) {
+        toast.error(json.error || "something went wrong!");
+        return;
+      }
+
+      toast.success("Order placed successfully");
+
+      // redirect to orders page or order details
+      window.location.href = "/orders";
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="p-3 max-w-2xl mx-auto">
@@ -54,6 +111,30 @@ const Checkout = () => {
 
       <div className="flex gap-2 flex-col">
         <div className="flex gap-2 flex-col sm:flex-row justify-between">
+          <h1 className="text-lg font-semibold">Products</h1>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {cart?.map((item) => (
+            <Card key={item.item._id} className="p-2 flex flex-row justify-between gap-2 w-full">
+              <div>
+                <img src={item.item.images[0].url} alt="" className="w-[50px] h-[50px] object-cover rounded-[5px]" />
+              </div>
+              <div className="flex-1">
+                <h1 className="text-sm line-clamp-2">{item.item.title}</h1>
+              </div>
+              <div className="flex gap-2 items-center">
+                <h1 className="font-semibold">₹{item.item.price}</h1>x<h1 className=" font-semibold">{item.quantity}</h1>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <div className="h-[1px] bg-gray-400 my-3" />
+
+      <div className="flex gap-2 flex-col">
+        <div className="flex gap-2 flex-col sm:flex-row justify-between">
           <h1 className="text-lg font-semibold">Payment</h1>
         </div>
 
@@ -80,9 +161,10 @@ const Checkout = () => {
 
       <Button
         className="my-7 cursor-pointer w-full bg-green-500 hover:bg-green-700 text-black text-lg"
-        disabled={!selectedAddress}
+        disabled={!cart?.length}
+        onClick={handleCheckout}
       >
-        {paymentMode === "COD" ? "Place Order" : "Pay Now"}
+        {loading ? "Placing order..." : paymentMode === "COD" ? "Place Order" : "Pay Now"}
       </Button>
     </div>
   );

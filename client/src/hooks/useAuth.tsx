@@ -25,7 +25,6 @@ export const useAuth = () => {
             setCart(data.data.cart);
             setWishlist(data.data.wishlist);
             setAddresses(data.data.addresses);
-            console.log(data.data.addresses);
           } else {
             throw new Error(data.error || "something went wrong!");
           }
