@@ -1,7 +1,13 @@
-const { createOrderDB, getOrdersDB, cancleOrderDB } = require("../../services/users/order.services");
+const { createOrderDB, getOrdersDB, cancleOrderDB, getOrderDetailDB } = require("../../services/users/order.services");
 
 const getOrders = async (req, res) => {
   const data = await getOrdersDB();
+  return res.json({ success: true, data });
+};
+
+const getOrderDetail = async (req, res) => {
+  const id = req.params.id;
+  const data = await getOrderDetailDB(id);
   return res.json({ success: true, data });
 };
 
@@ -45,4 +51,4 @@ const cancelOrder = async (req, res) => {
   }
 };
 
-module.exports = { getOrders, createOrder, cancelOrder };
+module.exports = { getOrderDetail, getOrders, createOrder, cancelOrder };

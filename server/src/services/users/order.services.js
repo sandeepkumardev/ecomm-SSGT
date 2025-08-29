@@ -3,8 +3,15 @@ const Order = require("../../models/order");
 const Cart = require("../../models/cart");
 
 const getOrdersDB = async () => {
-  return await Order.find({})
-    // .populate("user")
+  return await Order.find({});
+};
+
+const getOrderDetailDB = async (id) => {
+  return await Order.findById(id)
+    .populate({
+      path: "user",
+      select: "name email",
+    })
     .populate({
       path: "orderItems.product",
     })
@@ -13,6 +20,9 @@ const getOrdersDB = async () => {
 
 const createOrderDB = async (data) => {
   const session = await mongoose.startSession();
+
+  // generate a new order no. [crypto]
+  // check if order no. already exist -> generate new
 
   try {
     return await session.withTransaction(async () => {
@@ -34,4 +44,4 @@ const cancleOrderDB = async (id) => {
   return await Order.findByIdAndUpdate(id, { status: "canceled" }, { new: true });
 };
 
-module.exports = { getOrdersDB, createOrderDB, cancleOrderDB };
+module.exports = { getOrderDetailDB, getOrdersDB, createOrderDB, cancleOrderDB };

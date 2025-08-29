@@ -67,3 +67,22 @@ export interface IAddress {
   postalCode: string;
   country: string;
 }
+
+export interface IOrder {
+  _id: string;
+  user: IUser;
+  orderItems: ICart[];
+  status: string;
+  shippingAddress: IAddress;
+  paymentMethod: string;
+  paymentStatus: string;
+  totalAmount: number;
+  // paymentResult: string;
+  // itemsPrice: number;
+  // shippingPrice: number;
+  // taxPrice: number;
+  // isPaid: boolean;
+  // paidAt: string;
+  // isDelivered: boolean;
+  // deliveredAt: string;
+}

@@ -8,6 +8,8 @@ const router = express.Router();
 router.use("/category", categoryRoutes);
 router.use("/product", productRoutes);
 
+router.use("/order", require("./order.routes"));
+
 router.get("/users", getAllUsers);
 
 router.use("/user", require("./user.routes"));
