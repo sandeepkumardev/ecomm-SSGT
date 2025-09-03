@@ -8,8 +8,6 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
 
-  console.log(orders);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,7 +44,7 @@ const Orders = () => {
                 <p className="">
                   ID:{" "}
                   <Link to={`/order/${order._id}`} className="font-semibold">
-                    #{order._id}
+                    #{order.orderNo}
                   </Link>
                 </p>
                 <p className="">

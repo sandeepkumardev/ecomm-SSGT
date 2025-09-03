@@ -10,8 +10,6 @@ const withAuth =
     const navigate = useNavigate();
     const { user, loading } = useAuth();
 
-    // console.log(pathname);
-
     useEffect(() => {
       if (!user && !loading && isAuth) {
         navigate(`/signin`);
@@ -20,7 +18,7 @@ const withAuth =
       if (user && !isAuth) {
         navigate("/");
       }
-    }, [loading]);
+    }, [loading, user]);
 
     // ........................................ approach 1 -> seperate logic based on auth status // .......................
     // Protected page -> Dashboard and orders

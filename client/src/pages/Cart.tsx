@@ -10,13 +10,19 @@ import { toast } from "sonner";
 const Cart = () => {
   const { cart, loading } = useUserStore();
 
+  if (!cart) return null;
+
   return (
     <div className="p-3 max-w-7xl mx-auto">
       <h1 className="text-xl font-semibold my-3">All Products</h1>
       {loading && <p>loading cart itmes</p>}
 
-      {cart && cart.length === 0 && <p>Cart is empty</p>}
-      {cart?.length && (
+      {cart && cart.length === 0 && (
+        <div className="h-[calc(100vh-200px)] flex items-center justify-center">
+          <p className="text-xl font-semibold font-mono">Cart is empty</p>
+        </div>
+      )}
+      {cart?.length! > 0 && (
         <div className="flex gap-2 flex-col md:flex-row">
           <div className="flex gap-2 flex-wrap flex-1 h-fit">
             {cart && cart.map((product: any) => <Product key={product._id} {...product} />)}

@@ -2,7 +2,6 @@ import type { IImage } from "@/types";
 import React from "react";
 
 const ImageContainer = ({ data }: { data: IImage[] }) => {
-  console.log(data);
   const [defaultImg, setDefaultImg] = React.useState(data[0]?.url);
 
   return (

@@ -23,6 +23,7 @@ const createOrder = async (req, res) => {
     return res.json({ success: false, error: "Order items should be an array" });
   }
 
+  req.body.orderNo = Date.now(); // Generate a unique order number
   req.body.user = userId;
 
   try {
